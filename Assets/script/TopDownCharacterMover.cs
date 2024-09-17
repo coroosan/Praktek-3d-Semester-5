@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(InputHandler))]
 [RequireComponent(typeof(Animator))]
@@ -9,7 +7,7 @@ public class TopDownCharacterMover : MonoBehaviour
 {
     private InputHandler _input;
     private Animator _animator;
-    private AudioSource _audioSource; // Referensi ke komponen AudioSource
+    private AudioSource _audioSource;
 
     [SerializeField]
     private bool RotateTowardMouse;
@@ -25,25 +23,25 @@ public class TopDownCharacterMover : MonoBehaviour
     private Camera Camera;
 
     [SerializeField]
-    private AudioClip FootstepSound; // Klip suara langkah kaki
+    private AudioClip FootstepSound;
 
     private float currentSpeed;
 
     private void Awake()
     {
         _input = GetComponent<InputHandler>();
-        _animator = GetComponent<Animator>(); // Referensi komponen Animator
-        _audioSource = GetComponent<AudioSource>(); // Referensi komponen AudioSource
+        _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    // Update dipanggil sekali per frame
+    // Update is called once per frame
     void Update()
     {
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         var movementVector = MoveTowardTarget(targetVector);
 
-        UpdateAnimation(movementVector.magnitude); // Update animasi berdasarkan gerakan
-        HandleFootstepAudio(movementVector.magnitude); // Atur audio langkah kaki
+        UpdateAnimation(movementVector.magnitude); // Update animasi berdasarkan magnitudo gerakan
+        HandleFootstepAudio(movementVector.magnitude); // Atur suara langkah kaki
 
         if (!RotateTowardMouse)
         {
@@ -69,7 +67,6 @@ public class TopDownCharacterMover : MonoBehaviour
 
     private Vector3 MoveTowardTarget(Vector3 targetVector)
     {
-        // Periksa apakah pemain menekan tombol Shift untuk berlari
         currentSpeed = _input.IsRunning ? RunSpeed : WalkSpeed;
 
         var speed = currentSpeed * Time.deltaTime;
@@ -86,15 +83,12 @@ public class TopDownCharacterMover : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
     }
 
+    // Menggunakan nilai float untuk mengontrol animasi kecepatan dalam Blend Tree
     private void UpdateAnimation(float movementMagnitude)
     {
         if (_animator != null)
         {
-            bool isWalking = movementMagnitude > 0 && currentSpeed == WalkSpeed;
-            bool isRunning = movementMagnitude > 0 && currentSpeed == RunSpeed;
-
-            _animator.SetBool("IsWalking", isWalking);
-            _animator.SetBool("IsRunning", isRunning);
+            _animator.SetFloat("Blend", movementMagnitude * currentSpeed); // Mengatur float Speed untuk Blend Tree
         }
     }
 
