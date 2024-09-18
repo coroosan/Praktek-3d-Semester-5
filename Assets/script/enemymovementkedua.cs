@@ -6,14 +6,15 @@ public class enemymovementkedua : MonoBehaviour
 {
     public Transform player;             // Referensi ke transform pemain
     public NavMeshAgent enemy;           // Referensi ke NavMeshAgent pada musuh
-    public float shootingRange = 10f;    // Jarak tembak musuh
-    public float stoppingDistance = 5f;  // Jarak berhenti musuh
+    public float shootingRange = 15f;    // Jarak tembak musuh
+    public float stoppingDistance = 8f;  // Jarak berhenti musuh
     public GameObject bulletPrefab;      // Prefab peluru
     public Transform bulletSpawnPoint;   // Titik spawn peluru
     public float fireRate = 1f;          // Kecepatan tembak
     public float bulletSpeed = 20f;      // Kecepatan peluru
 
     private bool isShooting = false;     // Apakah musuh sedang menembak
+    private bool isPlayerInAttackRange = false;  // Apakah pemain berada dalam jangkauan serangan
 
     void Update()
     {
@@ -25,8 +26,8 @@ public class enemymovementkedua : MonoBehaviour
         fixedPosition.y = 0;
         transform.position = fixedPosition;
 
-        // Jika jarak ke pemain dalam jarak tembak
-        if (distanceToPlayer <= shootingRange)
+        // Jika pemain dalam jangkauan serangan
+        if (isPlayerInAttackRange && distanceToPlayer <= shootingRange)
         {
             // Berhenti mendekati pemain dan siap menembak
             enemy.stoppingDistance = stoppingDistance;
@@ -41,13 +42,39 @@ public class enemymovementkedua : MonoBehaviour
                 StartCoroutine(Shoot());
             }
         }
-        // Jika jarak ke pemain lebih dari jarak tembak
+        // Jika pemain tidak dalam jangkauan serangan atau lebih dari jarak tembak
         else
         {
             // Kejar pemain dan hentikan proses menembak
             enemy.stoppingDistance = 0f; // Tidak ada jarak berhenti saat mengejar
             enemy.SetDestination(player.position);
             StopShooting();              // Hentikan proses menembak
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Menggunakan tag untuk mendeteksi pemain
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInAttackRange = true;
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("LayerPlayer"))
+        {
+            isPlayerInAttackRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // Menggunakan tag untuk mendeteksi pemain keluar dari jangkauan
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInAttackRange = false;
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("LayerPlayer"))
+        {
+            isPlayerInAttackRange = false;
         }
     }
 
