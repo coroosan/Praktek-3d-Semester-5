@@ -42,10 +42,11 @@ public class enemymovementkedua : MonoBehaviour
                 StartCoroutine(Shoot());
             }
         }
-        // Jika pemain tidak dalam jangkauan serangan atau lebih dari jarak tembak
+        // Jika pemain tidak dalam jangkauan serangan atau ljarebih dari jarak tembak
         else
         {
             // Kejar pemain dan hentikan proses menembak
+            Debug.Log("Kejar");
             enemy.stoppingDistance = 0f; // Tidak ada jarak berhenti saat mengejar
             enemy.SetDestination(player.position);
             StopShooting();              // Hentikan proses menembak
