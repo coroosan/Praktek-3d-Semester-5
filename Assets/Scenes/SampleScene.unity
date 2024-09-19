@@ -467,6 +467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5755252826178164036, guid: 50f160a1696d419438281675fc0c1703, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1899219463}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8957,6 +8961,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bf462e15ba0dea845998cf15e19039fd, type: 3}
   m_PrefabInstance: {fileID: 1896668320}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1899219463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6194139408900636136, guid: 0afd2f73eae348645b45feabeff1298c, type: 3}
+  m_PrefabInstance: {fileID: 4237104606770787722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1920728351
 GameObject:
   m_ObjectHideFlags: 0
@@ -9717,6 +9726,14 @@ PrefabInstance:
       propertyPath: Camera
       value: 
       objectReference: {fileID: 1601840588}
+    - target: {fileID: 8040567382011067952, guid: 0afd2f73eae348645b45feabeff1298c, type: 3}
+      propertyPath: RunSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8040567382011067952, guid: 0afd2f73eae348645b45feabeff1298c, type: 3}
+      propertyPath: WalkSpeed
+      value: 5.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
